@@ -1,1 +1,1 @@
-﻿
+﻿this is readme file for trading web system.
