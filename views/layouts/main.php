@@ -16,15 +16,25 @@ AppAsset::register($this);
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+
+    <link href="<?php echo Yii::$app->urlManager->baseUrl; ?>/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo Yii::$app->urlManager->baseUrl; ?>/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="<?php echo Yii::$app->urlManager->baseUrl; ?>/css/plugins/blueimp/css/blueimp-gallery.min.css" rel="stylesheet">
+    <link href="<?php echo Yii::$app->urlManager->baseUrl; ?>/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="<?php echo Yii::$app->urlManager->baseUrl; ?>/css/animate.css" rel="stylesheet">
+    <link href="<?php echo Yii::$app->urlManager->baseUrl; ?>/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link href="<?php echo Yii::$app->urlManager->baseUrl; ?>/css/style.css" rel="stylesheet">
+    <link href="<?php echo Yii::$app->urlManager->baseUrl; ?>/css/custom.css" rel="stylesheet">
 </head>
-<body>
+<body class="<?php echo $this->params['bodyClass']; ?>">
 <?php $this->beginBody() ?>
 
-<div class="wrap">
+<?= $content ?>
+<?php /*<div class="wrap">
     <?php
     NavBar::begin([
         'brandLabel' => 'My Company',
@@ -70,9 +80,27 @@ AppAsset::register($this);
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
-</footer>
+</footer>*/ ?>
 
 <?php $this->endBody() ?>
+<!-- Mainly scripts -->
+<script src="<?php echo Yii::$app->urlManager->baseUrl; ?>/js/plugins/fullcalendar/moment.min.js"></script>
+<!--script src="<?php echo Yii::$app->urlManager->baseUrl; ?>/js/jquery-2.1.1.js"></script-->
+<script src="<?php echo Yii::$app->urlManager->baseUrl; ?>/js/jquery-ui-1.10.4.min.js"></script>
+<script src="<?php echo Yii::$app->urlManager->baseUrl; ?>/js/bootstrap.min.js"></script>
+<script src="<?php echo Yii::$app->urlManager->baseUrl; ?>/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="<?php echo Yii::$app->urlManager->baseUrl; ?>/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- jQuery UI custom -->
+<script src="<?php echo Yii::$app->urlManager->baseUrl; ?>/js/jquery-ui.custom.min.js"></script>
+
+<!-- iCheck -->
+<script src="<?php echo Yii::$app->urlManager->baseUrl; ?>/js/plugins/iCheck/icheck.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="<?php echo Yii::$app->urlManager->baseUrl; ?>/js/inspinia.js"></script>
+<script src="<?php echo Yii::$app->urlManager->baseUrl; ?>/js/plugins/pace/pace.min.js"></script>
+<script src="<?php echo Yii::$app->urlManager->baseUrl; ?>/js/scripts.js"></script>
 </body>
 </html>
 <?php $this->endPage() ?>
