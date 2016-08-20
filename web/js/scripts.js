@@ -63,4 +63,9 @@ $(document).ready(function () {
 			$('.keybaord-btn-item[data-val="' + codeArr[code] + '"]').trigger('click');
 		}
 	});
+
+	$('#myTabs a').click(function (e) {
+		e.preventDefault()
+		$(this).tab('show')
+	});
 });

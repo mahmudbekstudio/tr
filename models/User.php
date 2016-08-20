@@ -5,8 +5,16 @@ namespace app\models;
 class User extends \yii\base\Object implements \yii\web\IdentityInterface
 {
     public $id;
+    public $company_id;
+    public $email;
+    public $pass;
+    public $role;
+    public $firstname;
+    public $lastname;
+    public $registered;
+    public $status;
+
     public $username;
-    public $password;
     public $authKey;
     public $accessToken;
 
@@ -33,7 +41,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return self::findById($id);
     }
 
     /**
@@ -41,13 +49,24 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
+        $rows = (new \yii\db\Query())
+            ->select(['*'])
+            ->from(\Yii::$app->db->tablePrefix . 'user')
+            ->where(['accessToken' => $token])
+            ->all();
+        if(empty($rows)) {
+            $result = null;
+        } else {
+            $result = new static($rows[0]);
+        }
+        return $result;
+        /*foreach (self::$users as $user) {
             if ($user['accessToken'] === $token) {
                 return new static($user);
             }
-        }
+        }*/
 
-        return null;
+        //return null;
     }
 
     /**
@@ -65,6 +84,22 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
         }
 
         return null;
+    }
+
+    public static function findById($id)
+    {
+        $rows = (new \yii\db\Query())
+            ->select(['*'])
+            ->from(\Yii::$app->db->tablePrefix . 'user')
+            ->where(['id' => $id])
+            ->all();
+
+        if(empty($rows)) {
+            $result = false;
+        } else {
+            $result = new static($rows[0]);
+        }
+        return $result;
     }
 
     /**
@@ -100,5 +135,21 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     public function validatePassword($password)
     {
         return $this->password === $password;
+    }
+
+    public function validateUniqueCompanyPassword($password)
+    {
+        $rows = (new \yii\db\Query())
+            ->select(['user_id'])
+            ->from(\Yii::$app->db->tablePrefix . 'user_meta')
+            ->where(['meta_key' => 'unique_company_' . \Yii::$app->params['companyId'] . '_pass', 'meta_value' => $password])
+            ->all();
+        if(empty($rows)) {
+            $result = false;
+        } else {
+            $result = $rows[0];
+        }
+
+        return $result;
     }
 }
