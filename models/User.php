@@ -93,12 +93,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public function validateUniqueCompanyPassword($password)
     {
-        UserMeta::find()
+        $rows = UserMeta::find()
             ->select('user_id')
             ->from('{{%user_meta}}')
             ->where(['meta_key' => 'unique_company_' . \Yii::$app->params['companyId'] . '_pass', 'meta_value' => $password])
             ->one();
-        $rows = static::find()->select('user_id')->from('user_meta')->where(['meta_key' => 'unique_company_' . \Yii::$app->params['companyId'] . '_pass', 'meta_value' => $password])->all();;
         return $rows;
     }
 }
