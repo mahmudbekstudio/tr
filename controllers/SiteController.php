@@ -2,6 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\Category;
+use app\models\Goods;
+use app\models\Storage;
+use app\models\User;
+use app\models\UserMeta;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -63,7 +68,12 @@ class SiteController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->redirect(array('site/login'));
         }
-        return $this->render('index');
+
+        $categories = new Category();
+        $goodsIds = Storage::getAllGoodsIds();
+        $goods = Goods::getAllGoodsByIds($goodsIds);
+
+        return $this->render('index', array('categoryList' => $categories->getAll(), 'goodsList' => $goods));
     }
 
     /**
@@ -86,6 +96,18 @@ class SiteController extends Controller
         return $this->render('login', [
             'model' => $model,
         ]);
+        /*
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        }
+        return $this->render('login', [
+            'model' => $model,
+        ]);*/
     }
 
     /**

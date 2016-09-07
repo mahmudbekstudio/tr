@@ -2,154 +2,103 @@
 
 namespace app\models;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
+use yii\base\NotSupportedException;
+use Yii;
+
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
-    public $id;
-    public $company_id;
-    public $email;
-    public $pass;
-    public $role;
-    public $firstname;
-    public $lastname;
-    public $registered;
-    public $status;
-
-    public $username;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%user}}';
+    }
 
     /**
      * @inheritdoc
      */
+    public function rules()
+    {
+        return [
+            [['company_id', 'email', 'pass', 'firstname', 'lastname', 'registered', 'authKey', 'accessToken', 'username'], 'required'],
+            [['company_id', 'role', 'status'], 'integer'],
+            [['registered'], 'safe'],
+            [['email', 'pass', 'firstname', 'lastname', 'authKey', 'accessToken', 'username'], 'string', 'max' => 255],
+            [['company_id'], 'unique'],
+            [['email'], 'unique'],
+            [['role'], 'unique'],
+            [['firstname'], 'unique'],
+            [['lastname'], 'unique'],
+            [['status'], 'unique'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'company_id' => 'Company ID',
+            'email' => 'Email',
+            'pass' => 'Pass',
+            'role' => 'Role',
+            'firstname' => 'Firstname',
+            'lastname' => 'Lastname',
+            'registered' => 'Registered',
+            'status' => 'Status',
+            'authKey' => 'Auth Key',
+            'accessToken' => 'Access Token',
+            'username' => 'Username',
+        ];
+    }
+
     public static function findIdentity($id)
     {
-        return self::findById($id);
+        return static::findOne(['id' => $id]);
     }
 
-    /**
-     * @inheritdoc
-     */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        $rows = (new \yii\db\Query())
-            ->select(['*'])
-            ->from(\Yii::$app->db->tablePrefix . 'user')
-            ->where(['accessToken' => $token])
-            ->all();
-        if(empty($rows)) {
-            $result = null;
-        } else {
-            $result = new static($rows[0]);
-        }
-        return $result;
-        /*foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }*/
-
-        //return null;
+        return static::findOne(['accessToken' => $token]);
+        //throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
     public static function findByUsername($username)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return static::findOne(['username' => $username]);
     }
 
-    public static function findById($id)
-    {
-        $rows = (new \yii\db\Query())
-            ->select(['*'])
-            ->from(\Yii::$app->db->tablePrefix . 'user')
-            ->where(['id' => $id])
-            ->all();
-
-        if(empty($rows)) {
-            $result = false;
-        } else {
-            $result = new static($rows[0]);
-        }
-        return $result;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getId()
     {
-        return $this->id;
+        return $this->getPrimaryKey();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getAuthKey()
     {
         return $this->authKey;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return $this->getAuthKey() === $authKey;
     }
 
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return boolean if password provided is valid for current user
-     */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return Yii::$app->security->validatePassword($password, $this->pass);
     }
 
     public function validateUniqueCompanyPassword($password)
     {
-        $rows = (new \yii\db\Query())
-            ->select(['user_id'])
-            ->from(\Yii::$app->db->tablePrefix . 'user_meta')
+        UserMeta::find()
+            ->select('user_id')
+            ->from('{{%user_meta}}')
             ->where(['meta_key' => 'unique_company_' . \Yii::$app->params['companyId'] . '_pass', 'meta_value' => $password])
-            ->all();
-        if(empty($rows)) {
-            $result = false;
-        } else {
-            $result = $rows[0];
-        }
-
-        return $result;
+            ->one();
+        $rows = static::find()->select('user_id')->from('user_meta')->where(['meta_key' => 'unique_company_' . \Yii::$app->params['companyId'] . '_pass', 'meta_value' => $password])->all();;
+        return $rows;
     }
 }

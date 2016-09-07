@@ -100,6 +100,20 @@
 	height: 165px;
 }
 
+.site-content-col1.basket-side {
+	z-index: 1;
+}
+
+.site-content-col1.saved-basket-side {
+	display: none;
+	z-index: 2;
+	background: #FFF;
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+}
+
 .calcs {
 	position: relative;
 	padding-top: 20px;
@@ -222,6 +236,11 @@
 	text-overflow: ellipsis;
 }
 
+.custom-basket-table-head .custom-basket-table-th:last-child {
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+
 .custom-basket-table-body {
 	height: 100%;
 	width: 100%;
@@ -264,4 +283,31 @@
 
 .custom-basket-table .custom-basket-table-tr {
 	border-left: #ddd 1px solid;
+}
+
+.goods-item .thumbnail {
+	position: relative;
+}
+
+.goods-item .price {
+	position: absolute;
+	top: 5px;
+	right: 11px;
+	color: #FFF;
+	z-index: 2;
+}
+
+.goods-item .price-shadow {
+	position: absolute;
+	top: 6px;
+	right: 10px;
+	color: #000;
+	z-index: 1;
+}
+
+.goods-item .goods-item-title {
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
