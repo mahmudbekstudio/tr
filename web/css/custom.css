@@ -184,7 +184,6 @@
 }
 
 .meals .caption {
-	margin-top: 150px;
 	background-color: #FFF;
 }
 
@@ -291,14 +290,17 @@
 
 .goods-item {
 	display: block;
-	height: 200px;
 }
 
 .goods-item .thumbnail {
 	position: relative;
 	padding: 0;
+}
+
+.goods-item .thumbnail .img-responsive{
+	width: 100%;
 	background-position: center top;
-	background-size: 100% auto;
+	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	background-color: #337ab7;
 }
@@ -352,4 +354,24 @@
 	font-size: 11px !important;
 	color: #337ab7 !important;
 	cursor: pointer;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes add-goods-item {
+	from {background: #a7b1c2;}
+	to {background: none;}
+}
+
+/* Standard syntax */
+@keyframes add-goods-item {
+	from {background: #a7b1c2;}
+	to {background: none;}
+}
+
+.custom-basket-table-td.added {
+	background: none;
+	-webkit-animation-name: add-goods-item; /* Chrome, Safari, Opera */
+	-webkit-animation-duration: 0.5s; /* Chrome, Safari, Opera */
+	animation-name: add-goods-item;
+	animation-duration: 0.5s;
 }

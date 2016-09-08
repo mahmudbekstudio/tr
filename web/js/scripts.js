@@ -298,6 +298,12 @@ $(document).ready(function () {
 
 		item.find('.goods-count').text(n);
 		item.find('.goods-total-price').text(parseFloat(n) * parseFloat(itemInfo['price']));
+
+		var tdList = item.find('.custom-basket-table-td');
+		tdList.addClass('added');
+		setTimeout(function() {
+			tdList.removeClass('added');
+		}, 500);
 	};
 
 	var getItemInfo = function(id) {

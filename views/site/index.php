@@ -306,8 +306,8 @@ $this->params['bodyClass'] = 'dashboard';
                                                         ?>
                                                         <div class="col-sm-4">
                                                             <a href="#" class="goods-item" data-id="<?php echo $val['id'] ?>" data-name="<?php echo $val['name'] ?>" data-price="<?php echo $val['sell_price'] ?>">
-                                                                <div class="thumbnail" style="background-image: url('<?php echo Yii::$app->urlManager->baseUrl; ?>/<?php echo $val['pic'] ?>')">
-                                                                    <!--img src="<?php echo Yii::$app->urlManager->baseUrl; ?>/<?php echo $val['pic'] ?>" alt="<?php echo $val['name'] ?>" class="img-responsive" title="<?php echo $val['name'] ?>"-->
+                                                                <div class="thumbnail">
+                                                                    <img style="background-image: url('<?php echo Yii::$app->urlManager->baseUrl; ?>/<?php echo $val['pic'] ?>')" src="<?php echo Yii::$app->urlManager->baseUrl; ?>/img/thumb-image.png" alt="<?php echo $val['name'] ?>" class="img-responsive" title="<?php echo $val['name'] ?>">
                                                                     <div class="caption">
                                                                         <strong class="goods-item-title" title="<?php echo $val['name'] ?>"><?php echo $val['name'] ?></strong>
                                                                         <span class="price"><?php echo $val['sell_price'] ?> so`m</span>
