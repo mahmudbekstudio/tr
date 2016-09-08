@@ -231,27 +231,46 @@ $this->params['bodyClass'] = 'dashboard';
                             </div>
                         </div>
                         <div class="col-sm-6 site-content-col1 saved-basket-side">
+
+
+                            <div class="basket">
+                                <div class="basket-table">
+                                    <div class="custom-basket-table clearfix">
+                                        <div class="custom-basket-table-head">
+                                            <div class="col-sm-12">
+                                                <div class="custom-basket-table-tr row">
+                                                    <div class="custom-basket-table-th col-sm-3">Время</div>
+                                                    <div class="custom-basket-table-th col-sm-5">Наименования</div>
+                                                    <div class="custom-basket-table-th col-sm-3">Сумма</div>
+                                                    <div class="custom-basket-table-th col-sm-1"><a href="#" class="btn btn-default text-center saved-basket-clear">X</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="custom-basket-table-body clearfix ">
+                                            <div class="custom-basket-table-tr row custom-saved-basket-table-tr-example hidden" data-saved-basket-time="">
+                                                <div class="custom-basket-table-td col-md-3 custom-saved-basket-table-td-title saved-basket-date"></div>
+                                                <div class="custom-basket-table-td col-md-5 saved-basket-name"></div>
+                                                <div class="custom-basket-table-td col-md-3 saved-basket-total-price"></div>
+                                                <div class="custom-basket-table-td custom-saved-basket-table-td-action col-md-1"><a href="#" class="btn btn-default text-center saved-basket-goods-return"><i class="fa fa-reply-all" aria-hidden="true"></i></a></div>
+                                            </div>
+                                            <div class="col-sm-12 custom-saved-basket-table-body-list">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <div class="checkout">
                                 <section class="buttons">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <table class="table table-bordered table-responsive">
-
-                                                <tr>
-                                                    <td>Итого</td>
-                                                    <td class="basket-total-price">0</td>
-                                                </tr>
-
-                                            </table>
-                                        </div><!-- col -->
-                                    </div><!-- row -->
 
                                     <div class="row">
                                         <div class="col-sm-6 text-center">
-                                            <a href="#" class="btn btn-lg btn-default basket-goods-clear"><i class="fa fa-lg fa-trash"></i> <span class="hidden-sm hidden-xs hidden-md">Отмена</span></a>
+                                            <a href="#" class="btn btn-lg btn-default saved-basket-clear"><i class="fa fa-lg fa-trash"></i> <span class="hidden-sm hidden-xs hidden-md">Очистить</span></a>
                                         </div><!-- col -->
                                         <div class="col-sm-6 text-center">
-                                            <a href="#" class="btn btn-lg btn-warning basket-goods-save"><i class="fa fa-lg fa-save"></i> <span class="hidden-sm hidden-xs hidden-md">Очистить</span></a>
+                                            <a href="#" class="btn btn-lg btn-warning saved-basket-close"><i class="fa fa-lg fa-arrow-left"></i> <span class="hidden-sm hidden-xs hidden-md">Назад</span></a>
                                         </div>
                                     </div><!-- row -->
                                 </section><!-- buttons -->
@@ -285,12 +304,12 @@ $this->params['bodyClass'] = 'dashboard';
                                                         if($val['category_id'] != $item['id'])
                                                             continue;
                                                         ?>
-                                                        <div class="col-sm-3">
+                                                        <div class="col-sm-4">
                                                             <a href="#" class="goods-item" data-id="<?php echo $val['id'] ?>" data-name="<?php echo $val['name'] ?>" data-price="<?php echo $val['sell_price'] ?>">
-                                                                <div class="thumbnail">
-                                                                    <img src="<?php echo Yii::$app->urlManager->baseUrl; ?>/<?php echo $val['pic'] ?>" alt="<?php echo $val['name'] ?>" class="img-responsive" title="<?php echo $val['name'] ?>">
+                                                                <div class="thumbnail" style="background-image: url('<?php echo Yii::$app->urlManager->baseUrl; ?>/<?php echo $val['pic'] ?>')">
+                                                                    <!--img src="<?php echo Yii::$app->urlManager->baseUrl; ?>/<?php echo $val['pic'] ?>" alt="<?php echo $val['name'] ?>" class="img-responsive" title="<?php echo $val['name'] ?>"-->
                                                                     <div class="caption">
-                                                                        <strong class="goods-item-title"><?php echo $val['name'] ?></strong>
+                                                                        <strong class="goods-item-title" title="<?php echo $val['name'] ?>"><?php echo $val['name'] ?></strong>
                                                                         <span class="price"><?php echo $val['sell_price'] ?> so`m</span>
                                                                         <span class="price-shadow"><?php echo $val['sell_price'] ?> so`m</span>
                                                                     </div>

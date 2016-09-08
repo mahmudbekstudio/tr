@@ -139,6 +139,78 @@ $(document).ready(function () {
 		.on('click', '.basket-goods-return-saved', function() {
 			$('.saved-basket-side').slideDown();
 			return false;
+		})
+		.on('click', '.saved-basket-close', function() {
+			$('.saved-basket-side').slideUp();
+			return false;
+		})
+		.on('click', '.saved-basket-name', function() {
+			var row = $(this).closest('.custom-basket-table-tr');
+			var rowTime = row.attr('data-saved-basket-time');
+			var savedBasketList = getSavedBasket();
+			var savedBasket;
+			var showList = '';
+
+			for(var val in savedBasketList) {
+				if(savedBasketList[val].date == rowTime) {
+					savedBasket = savedBasketList[val];
+					break;
+				}
+			}
+
+			for(var id in savedBasket.basket) {
+				var item = $('.goods-item[data-id="' + id + '"]');
+				var itemName = item.attr('data-name');
+				var itemPrice = item.attr('data-price');
+				var itemCount = savedBasket.basket[id];
+
+				if(showList) {
+					showList += "\n";
+				}
+				showList += itemName + ' (' + itemPrice + ' so`m) x ' + itemCount + ' = ' + (itemPrice * itemCount);
+			}
+
+			alert(showList);
+
+			return false;
+		})
+		.on('click', '.saved-basket-clear', function() {//130-30-27
+			clearSavedBasket();
+			return false;
+		})
+		.on('click', '.saved-basket-goods-return', function() {
+			var basketList = $('.custom-basket-table-body-list').find('.custom-basket-table-tr');
+			if(basketList.length) {
+				if(confirm('Do you want clear basket?')) {
+					clearBasket();
+				} else {
+					return false;
+				}
+			}
+
+			var row = $(this).closest('.custom-basket-table-tr');
+			var rowTime = row.attr('data-saved-basket-time');
+			var savedBasketList = getSavedBasket();
+			var newSavedBasketList = [];
+			var selectedBasket;
+
+			for(var val in savedBasketList) {
+				if(savedBasketList[val].date == rowTime) {
+					selectedBasket = savedBasketList[val].basket;
+				} else {
+					newSavedBasketList.push(savedBasketList[val]);
+				}
+			}
+
+			setBasket(selectedBasket);
+			setSavedBasket(newSavedBasketList);
+
+			initBasket();
+			initSavedBasket();
+
+			$('.saved-basket-close').trigger('click');
+
+			return false;
 		});
 
 	var calcTotalPrice = function() {
@@ -335,6 +407,43 @@ $(document).ready(function () {
 		} else {
 			returnBtn.addClass('disabled');
 		}
+
+		$('.custom-saved-basket-table-body-list').html('');
+
+		for(var val in savedBasket) {
+			addToListSavedBasket(savedBasket[val]);
+		}
+	};
+
+	var addToListSavedBasket = function(savedBasket) {
+		var basketHave = '';
+		var basketTotal = 0;
+		var basket = savedBasket.basket;
+		var d = new Date(savedBasket.date);
+		var example = $('.custom-saved-basket-table-tr-example').clone(true).removeClass('custom-saved-basket-table-tr-example hidden');
+
+		example.attr('data-saved-basket-time', savedBasket.date);
+		example.find('.saved-basket-date').html(d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds());
+
+		for(var val in basket) {
+			var item = $('.goods-item[data-id="' + val + '"]');
+			var itemPrice = item.attr('data-price');
+			var itemCount = basket[val];
+			var itemName = item.attr('data-name');
+
+			//basketHave += '<p><strong>' + itemName + '</strong> (' + itemPrice + ' so`m) x ' + itemCount + ' = ' + (itemPrice * itemCount) + '</p>';
+			if(basketHave) {
+				basketHave += ', ';
+			}
+			basketHave += itemName;
+
+			basketTotal += itemPrice * itemCount;
+		}
+
+		example.find('.saved-basket-name').html(basketHave);
+		example.find('.saved-basket-total-price').html(basketTotal);
+
+		$('.custom-saved-basket-table-body-list').append(example);
 	};
 
 	var saveBasket = function() {
@@ -343,7 +452,11 @@ $(document).ready(function () {
 		var basketGoodsCount = getGoodsCount();
 
 		if(basketGoodsCount) {
-			savedBasket.push(basket);
+			var dTime = (new Date()).getTime();
+			var addToSavedBasket = {date: dTime, basket: basket};
+
+			addToListSavedBasket(addToSavedBasket);
+			savedBasket.push(addToSavedBasket);
 			setSavedBasket(savedBasket);
 			clearBasket();
 
@@ -351,6 +464,11 @@ $(document).ready(function () {
 				$('.basket-goods-return-saved').removeClass('disabled');
 			}
 		}
+	};
+
+	var clearSavedBasket = function() {
+		setSavedBasket([]);
+		initSavedBasket();
 	};
 
 

@@ -106,11 +106,12 @@
 
 .site-content-col1.saved-basket-side {
 	display: none;
+	height: auto;
 	z-index: 2;
 	background: #FFF;
 	position: absolute;
 	left: 0;
-	top: 0;
+	top: 45px;
 	bottom: 0;
 }
 
@@ -183,7 +184,8 @@
 }
 
 .meals .caption {
-	padding-bottom: 18px;
+	margin-top: 150px;
+	background-color: #FFF;
 }
 
 .modal-dialog {
@@ -272,12 +274,14 @@
 	line-height: 23px;
 }
 
-.custom-basket-table-body .custom-basket-table-td-action {
+.custom-basket-table-body .custom-basket-table-td-action,
+.custom-basket-table-body .custom-saved-basket-table-td-action {
 	padding: 0;
 	line-height: 40px;
 }
 
-.custom-basket-table-body .custom-basket-table-td-title {
+.custom-basket-table-body .custom-basket-table-td-title,
+.custom-basket-table-body .custom-saved-basket-table-td-title {
 	text-align: left;
 }
 
@@ -285,12 +289,21 @@
 	border-left: #ddd 1px solid;
 }
 
+.goods-item {
+	display: block;
+	height: 200px;
+}
+
 .goods-item .thumbnail {
 	position: relative;
+	padding: 0;
+	background-position: center top;
+	background-size: 100% auto;
+	background-repeat: no-repeat;
+	background-color: #337ab7;
 }
 
 .goods-item .price {
-	position: absolute;
 	top: 5px;
 	right: 11px;
 	color: #FFF;
@@ -298,11 +311,17 @@
 }
 
 .goods-item .price-shadow {
-	position: absolute;
 	top: 6px;
 	right: 10px;
 	color: #000;
 	z-index: 1;
+}
+
+.goods-item .price,
+.goods-item .price-shadow {
+	position: absolute;
+	font-size: 15px;
+	font-weight: bold;
 }
 
 .goods-item .goods-item-title {
@@ -310,4 +329,27 @@
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+}
+
+.categories .nav > li > a {
+	outline: 1px solid #EEE;
+}
+
+.categories .nav > li {
+	margin-left: 3px !important;
+	margin-right: 2px !important;
+}
+
+.saved-basket-side .checkout {
+	height: 110px;
+}
+
+.saved-basket-side .basket {
+	padding-bottom: 110px;
+}
+
+.saved-basket-name {
+	font-size: 11px !important;
+	color: #337ab7 !important;
+	cursor: pointer;
 }
