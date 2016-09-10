@@ -83,16 +83,19 @@
 	position: relative;
 }
 
-.site-content-col1 .basket {
+.site-content-col1 .basket,
+.site-content-col2 .basket {
 	height: 100%;
 	padding-bottom: 165px;
 }
 
-.site-content-col1 .basket-table {
+.site-content-col1 .basket-table,
+.site-content-col2 .basket-table {
 	height: 100%;
 }
 
-.site-content-col1 .checkout {
+.site-content-col1 .checkout,
+.site-content-col2 .checkout {
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -104,7 +107,8 @@
 	z-index: 1;
 }
 
-.site-content-col1.saved-basket-side {
+.site-content-col1.saved-basket-side,
+.site-content-col2.saved-goods-right-side {
 	display: none;
 	height: auto;
 	z-index: 2;
@@ -113,6 +117,11 @@
 	left: 0;
 	top: 45px;
 	bottom: 0;
+}
+
+.site-content-col2.saved-goods-right-side {
+	left: auto;
+	right: 0;
 }
 
 .calcs {
@@ -150,6 +159,10 @@
 .buttons td {
 	font-size: 20px;
 	font-weight: bold;
+}
+
+.site-content-col2.saved-goods-right-side .buttons {
+	padding-top: 20px;
 }
 
 .categories li {
@@ -274,7 +287,8 @@
 }
 
 .custom-basket-table-body .custom-basket-table-td-action,
-.custom-basket-table-body .custom-saved-basket-table-td-action {
+.custom-basket-table-body .custom-saved-basket-table-td-action,
+.custom-basket-table-body .custom-saved-basket-table-right-td-action {
 	padding: 0;
 	line-height: 40px;
 }
@@ -286,6 +300,18 @@
 
 .custom-basket-table .custom-basket-table-tr {
 	border-left: #ddd 1px solid;
+}
+
+.custom-basket-table .custom-basket-table-tr.active-tr-row {
+	background-color: #337ab7;
+}
+
+.custom-basket-table .custom-basket-table-tr.active-tr-row .custom-basket-table-td {
+	color: #FFF !important;
+}
+
+.custom-basket-table .custom-basket-table-tr.active-tr-row .custom-basket-table-td .saved-basket-goods-return {
+	color: #666 !important;
 }
 
 .goods-item {
@@ -350,21 +376,22 @@
 	padding-bottom: 110px;
 }
 
-.saved-basket-name {
-	font-size: 11px !important;
+.saved-basket-name,
+.saved-basket-date,
+.saved-basket-total-price {
 	color: #337ab7 !important;
 	cursor: pointer;
 }
 
 /* Chrome, Safari, Opera */
 @-webkit-keyframes add-goods-item {
-	from {background: #a7b1c2;}
+	from {background: #f8ac59;}
 	to {background: none;}
 }
 
 /* Standard syntax */
 @keyframes add-goods-item {
-	from {background: #a7b1c2;}
+	from {background: #f8ac59;}
 	to {background: none;}
 }
 
@@ -374,4 +401,8 @@
 	-webkit-animation-duration: 0.5s; /* Chrome, Safari, Opera */
 	animation-name: add-goods-item;
 	animation-duration: 0.5s;
+}
+
+.visible-hidden {
+	visibility: hidden;
 }
