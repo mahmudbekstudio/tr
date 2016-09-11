@@ -406,3 +406,16 @@
 .visible-hidden {
 	visibility: hidden;
 }
+
+.basket-goods-remove,
+.saved-basket-goods-right-remove,
+.basket-goods-add,
+.saved-basket-goods-right-add {
+	margin-top: -5px;
+}
+
+.custom-basket-table-td .value,
+.custom-basket-table-td .saved-value {
+	display: inline-block;
+	min-width: 30px;
+}

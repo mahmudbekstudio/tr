@@ -85,6 +85,14 @@ $(document).ready(function () {
 
 			return false;
 		})
+		.on('click', '.basket-goods-add', function() {
+			var tr = $(this).closest('.custom-basket-table-tr');
+			var id = tr.attr('data-goods-id');
+
+			addToBasket(id);
+
+			return false;
+		})
 		.on('click', '.basket-goods-clear', function() {
 			if(confirm('Clear basket?')) {
 				clearBasket();
@@ -199,37 +207,21 @@ $(document).ready(function () {
 
 			return false;
 		})
-		.on('click', '.custom-saved-basket-table-right-td-action', function() {
+		.on('click', '.saved-basket-goods-right-remove', function() {
 			var row = $(this).closest('.custom-basket-table-tr');
 			var rowId = row.attr('data-goods-id');
 			var basketTime = row.closest('.basket').attr('data-saved-basket-time');
-			var savedBasket = getSavedBasket();
-			var newSavedBasket = [];
 
-			for(var val in savedBasket) {
-				if(savedBasket[val].date == basketTime) {
-					var totalCount = 0;
+			savedBasketActions(rowId, basketTime, 'remove');
 
-					for(var id in savedBasket[val].basket) {
-						if(id == rowId) {
-							savedBasket[val].basket[id]--;
-							drawSaveItem(id, savedBasket[val].basket[id]);
-						}
-						totalCount += savedBasket[val].basket[id];
-					}
+			return false;
+		})
+		.on('click', '.saved-basket-goods-right-add', function() {
+			var row = $(this).closest('.custom-basket-table-tr');
+			var rowId = row.attr('data-goods-id');
+			var basketTime = row.closest('.basket').attr('data-saved-basket-time');
 
-					if(totalCount) {
-						newSavedBasket.push(savedBasket[val]);
-					}
-				} else {
-					newSavedBasket.push(savedBasket[val]);
-				}
-			}
-
-			setSavedBasket(newSavedBasket);
-			initSavedBasket();
-			$('.saved-basket-side').find('.custom-basket-table-tr[data-saved-basket-time="' + basketTime + '"]').addClass('active-tr-row');
-
+			savedBasketActions(rowId, basketTime, 'add');
 			return false;
 		})
 		.on('click', '.saved-basket-goods-right-clear', function() {
@@ -249,6 +241,71 @@ $(document).ready(function () {
 			initSavedBasket();
 			checkout.addClass('hidden').find('.saved-basket-right-total-price').html(0);
 			basket.addClass('hidden').find('.custom-saved-basket-table-right-body-list').html('');
+			return false;
+		})
+		.on('click', '.basket-goods-item-remove', function() {
+			var rowItem = $(this).closest('.custom-basket-table-tr');
+			var rowId = rowItem.attr('data-goods-id');
+			var basketList = getBasket();
+			var newBasketList = {};
+
+			for(var id in basketList) {
+				if(id != rowId) {
+					newBasketList[id] = basketList[id];
+				}
+			}
+
+			setBasket(newBasketList);
+			initBasket();
+
+			return false;
+		})
+		.on('click', '.saved-basket-goods-item-right-remove', function() {
+			var row = $(this).closest('.custom-basket-table-tr');
+			var rowId = row.attr('data-goods-id');
+			var basketTime = row.closest('.basket').attr('data-saved-basket-time');
+			var savedBasketList = getSavedBasket();
+			var newSavedBasket = [];
+
+			for(var val in savedBasketList) {
+				if(savedBasketList[val].date == basketTime) {
+					var totalCount = 0;
+					var savedBasketItem = savedBasketList[val].basket;
+					savedBasketList[val].basket = {};
+
+					for(var id in savedBasketItem) {
+						if(id != rowId) {
+							savedBasketList[val].basket[id] = savedBasketItem[id];
+							totalCount += savedBasketList[val].basket[id];
+						}
+					}
+
+					if(totalCount) {
+						newSavedBasket.push(savedBasketList[val]);
+					}
+				} else {
+					newSavedBasket.push(savedBasketList[val]);
+				}
+			}
+
+
+			setSavedBasket(newSavedBasket);
+			initSavedBasket();
+			row.remove();
+			var tr = $('.saved-basket-side').find('.custom-basket-table-tr[data-saved-basket-time="' + basketTime + '"]');
+			if(tr.length) {
+				tr.addClass('active-tr-row');
+			} else {
+				hideSavedGoodsRightSide();
+			}
+
+			return false;
+		})
+		.on('click', '.saved-basket-goods-right-return', function() {
+			var basketTime = $(this).closest('.checkout').siblings('.basket').attr('data-saved-basket-time');
+
+			$('.saved-basket-side').find('.custom-basket-table-tr[data-saved-basket-time="' + basketTime + '"]').find('.saved-basket-goods-return').trigger('click');
+
 			return false;
 		});
 
@@ -324,7 +381,7 @@ $(document).ready(function () {
 			$('.custom-basket-table-body-list').append(item);
 		}
 
-		item.find('.goods-count').text(n);
+		item.find('.goods-count').find('.value').text(n);
 		item.find('.goods-total-price').text(parseFloat(n) * parseFloat(itemInfo['price']));
 
 		var tdList = item.find('.custom-basket-table-td');
@@ -347,6 +404,8 @@ $(document).ready(function () {
 
 	var initBasket = function() {
 		var basket = getBasket();
+
+		$('.custom-basket-table-body-list').html('');
 
 		for(var id in basket) {
 			drawItem(id, basket[id]);
@@ -539,10 +598,52 @@ $(document).ready(function () {
 			side.find('.custom-saved-basket-table-right-body-list').append(item);
 		}
 
-		item.find('.right-goods-count').text(n);
+		item.find('.right-goods-count').find('.saved-value').text(n);
 		item.find('.right-goods-total-price').text(totalPrice);
 
 		return totalPrice;
+	};
+
+	var savedBasketActions = function(rowId, basketTime, action) {
+		var savedBasket = getSavedBasket();
+		var newSavedBasket = [];
+
+		if(!action || action != 'add') {
+			action = 'remove';
+		}
+
+		for(var val in savedBasket) {
+			if(savedBasket[val].date == basketTime) {
+				var totalCount = 0;
+
+				for(var id in savedBasket[val].basket) {
+					if(id == rowId) {
+						if(action == 'add') {
+							savedBasket[val].basket[id]++;
+						} else {
+							savedBasket[val].basket[id]--;
+						}
+						drawSaveItem(id, savedBasket[val].basket[id]);
+					}
+					totalCount += savedBasket[val].basket[id];
+				}
+
+				if(totalCount) {
+					newSavedBasket.push(savedBasket[val]);
+				}
+			} else {
+				newSavedBasket.push(savedBasket[val]);
+			}
+		}
+
+		setSavedBasket(newSavedBasket);
+		initSavedBasket();
+		var tr = $('.saved-basket-side').find('.custom-basket-table-tr[data-saved-basket-time="' + basketTime + '"]');
+		if(tr.length) {
+			tr.addClass('active-tr-row');
+		} else {
+			hideSavedGoodsRightSide();
+		}
 	};
 
 

@@ -144,9 +144,9 @@ $this->params['bodyClass'] = 'dashboard';
                                             <div class="col-sm-12">
                                                 <div class="custom-basket-table-tr row">
                                                     <div class="custom-basket-table-th col-sm-4">Название</div>
-                                                    <div class="custom-basket-table-th col-sm-2">Кол-во</div>
+                                                    <div class="custom-basket-table-th col-sm-3">Кол-во</div>
                                                     <div class="custom-basket-table-th col-sm-2">Цена</div>
-                                                    <div class="custom-basket-table-th col-sm-3">Сумма</div>
+                                                    <div class="custom-basket-table-th col-sm-2">Сумма</div>
                                                     <div class="custom-basket-table-th col-sm-1"><a href="#" class="btn btn-default text-center basket-goods-clear">X</a></div>
                                                 </div>
                                             </div>
@@ -154,10 +154,10 @@ $this->params['bodyClass'] = 'dashboard';
                                         <div class="custom-basket-table-body clearfix ">
                                             <div class="custom-basket-table-tr row custom-basket-table-tr-example hidden" data-goods-id="">
                                                 <div class="custom-basket-table-td col-md-4 custom-basket-table-td-title goods-name"></div>
-                                                <div class="custom-basket-table-td col-md-2 goods-count"></div>
+                                                <div class="custom-basket-table-td col-md-3 goods-count"><a href="#" class="btn btn-default text-center basket-goods-remove">–</a> <span class="value"></span> <a href="#" class="btn btn-default text-center basket-goods-add">+</a></div>
                                                 <div class="custom-basket-table-td col-md-2 goods-price"></div>
-                                                <div class="custom-basket-table-td col-md-3 goods-total-price"></div>
-                                                <div class="custom-basket-table-td custom-basket-table-td-action col-md-1"><a href="#" class="btn btn-default text-center basket-goods-remove">–</a></div>
+                                                <div class="custom-basket-table-td col-md-2 goods-total-price"></div>
+                                                <div class="custom-basket-table-td custom-basket-table-td-action col-md-1"><a href="#" class="btn btn-default text-center basket-goods-item-remove">–</a></div>
                                             </div>
                                             <div class="col-sm-12 custom-basket-table-body-list">
 
@@ -306,9 +306,9 @@ $this->params['bodyClass'] = 'dashboard';
                                             <div class="col-sm-12">
                                                 <div class="custom-basket-table-tr row">
                                                     <div class="custom-basket-table-th col-sm-4">Название</div>
-                                                    <div class="custom-basket-table-th col-sm-2">Кол-во</div>
+                                                    <div class="custom-basket-table-th col-sm-3">Кол-во</div>
                                                     <div class="custom-basket-table-th col-sm-2">Цена</div>
-                                                    <div class="custom-basket-table-th col-sm-3">Сумма</div>
+                                                    <div class="custom-basket-table-th col-sm-2">Сумма</div>
                                                     <div class="custom-basket-table-th col-sm-1"><a href="#" class="btn btn-default text-center saved-basket-goods-right-clear">X</a></div>
                                                 </div>
                                             </div>
@@ -316,10 +316,10 @@ $this->params['bodyClass'] = 'dashboard';
                                         <div class="custom-basket-table-body clearfix ">
                                             <div class="custom-basket-table-tr row custom-saved-basket-table-right-tr-example hidden" data-goods-id="">
                                                 <div class="custom-basket-table-td col-md-4 custom-saved-basket-table-right-td-title right-goods-name"></div>
-                                                <div class="custom-basket-table-td col-md-2 right-goods-count"></div>
+                                                <div class="custom-basket-table-td col-md-3 right-goods-count"><a href="#" class="btn btn-default text-center saved-basket-goods-right-remove">–</a> <span class="saved-value"></span> <a href="#" class="btn btn-default text-center saved-basket-goods-right-add">+</a></div>
                                                 <div class="custom-basket-table-td col-md-2 right-goods-price"></div>
-                                                <div class="custom-basket-table-td col-md-3 right-goods-total-price"></div>
-                                                <div class="custom-basket-table-td custom-saved-basket-table-right-td-action col-md-1"><a href="#" class="btn btn-default text-center saved-basket-goods-right-remove">–</a></div>
+                                                <div class="custom-basket-table-td col-md-2 right-goods-total-price"></div>
+                                                <div class="custom-basket-table-td custom-saved-basket-table-right-td-action col-md-1"><a href="#" class="btn btn-default text-center saved-basket-goods-item-right-remove">–</a></div>
                                             </div>
                                             <div class="col-sm-12 custom-saved-basket-table-right-body-list">
 
@@ -345,10 +345,13 @@ $this->params['bodyClass'] = 'dashboard';
                                     </div><!-- row -->
 
                                     <div class="row">
-                                        <div class="col-sm-3 text-center">
+                                        <div class="col-sm-4 text-center">
                                             <a href="#" class="btn btn-lg btn-default saved-basket-goods-right-clear"><i class="fa fa-lg fa-trash"></i> <span class="hidden-sm hidden-xs hidden-md">Отмена</span></a>
                                         </div><!-- col -->
-                                        <div class="col-sm-3 text-center">
+                                        <div class="col-sm-4 text-center">
+                                            <a href="#" class="btn btn-lg btn-info saved-basket-goods-right-return"><i class="fa fa-lg fa-reply-all"></i> <span class="hidden-sm hidden-xs hidden-md">Восстановить</span></a>
+                                        </div><!-- col -->
+                                        <div class="col-sm-4 text-center">
                                             <a href="#" class="btn btn-lg btn-success basket-goods-pay" data-toggle="modal" data-target="#stepTwoModal"><i class="fa fa-lg fa-money" aria-hidden="true"></i> <span class="hidden-sm hidden-xs hidden-md">Оплатить</span></a>
                                         </div>
                                     </div><!-- row -->
