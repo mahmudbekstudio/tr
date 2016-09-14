@@ -71,10 +71,28 @@ class SiteController extends Controller
 
         $categories = new Category();
         $goodsIds = Storage::getAllGoodsIds();
-        $goods = Goods::getAllGoodsByIds($goodsIds);
+        $goods = count($goodsIds) ? Goods::getAllGoodsByIds($goodsIds) : array();
         $vipUsersList = User::getVipUsers();
 
         return $this->render('index', array('categoryList' => $categories->getAll(), 'goodsList' => $goods, 'vipUsersList' => $vipUsersList));
+    }
+
+    public function actionAddbasket()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(array('site/error'));
+        }
+
+        $request = Yii::$app->request;
+        $requestBasket = $request->post('requestBasket');
+        $requestBasket = json_decode($requestBasket);
+        $result = [];
+
+        foreach($requestBasket as $val) {
+            $result[] = $val->date;
+        }
+
+        return \yii\helpers\Json::encode($result);
     }
 
     /**

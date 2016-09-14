@@ -101,7 +101,67 @@ $(document).ready(function () {
 			return false;
 		})
 		.on('click', '.basket-goods-save', function() {
-			saveBasket();
+			var dTime = saveBasket();
+			$('.custom-saved-basket-table-body-list').find('.custom-basket-table-tr[data-saved-basket-time="' + dTime + '"]').find('.saved-basket-goods-note').trigger('click');
+			return false;
+		})
+		.on('click', '.saved-basket-goods-note', function() {
+			var row = $(this).closest('.custom-basket-table-tr');
+			var rowId = row.attr('data-saved-basket-time');
+			var popup = $('#savePopup');
+			var savedBasketList = getSavedBasket();
+			var selectedBasket;
+
+			for(var val in savedBasketList) {
+				if(savedBasketList[val].date == rowId) {
+					selectedBasket = savedBasketList[val];
+					break;
+				}
+			}
+
+			var savedBasketTotal = 0;
+			for(var id in selectedBasket.basket) {
+				var itemInfo = getItemInfo(id);
+
+				savedBasketTotal += itemInfo.price * selectedBasket.basket[id];
+			}
+
+			popup.attr('data-row-id', selectedBasket.date);
+			popup.find('.save-popup-total').html(getMoney(savedBasketTotal));
+			popup.find('.save-popup-note').val(selectedBasket.note);
+
+			popup.modal('show');
+			return false;
+		})
+		.on('click', '.save-popup-btn', function() {
+			var popup = $('#savePopup');
+			var rowId = popup.attr('data-row-id');
+			var savedBasketList = getSavedBasket();
+			var newSavedBasketList = [];
+			var activeRowId;
+
+			for(var val in savedBasketList) {
+				if(savedBasketList[val].date == rowId) {
+					savedBasketList[val].note = popup.find('.save-popup-note').val();
+				}
+
+				newSavedBasketList.push(savedBasketList[val]);
+			}
+
+			var rowList = $('.custom-saved-basket-table-body-list');
+			var activeRow = rowList.find('.custom-basket-table-tr.active-tr-row');
+			if(activeRow.length) {
+				activeRowId = activeRow.attr('data-saved-basket-time');
+			}
+
+			setSavedBasket(newSavedBasketList);
+			initSavedBasket();
+
+			if(activeRowId) {
+				rowList.find('.custom-basket-table-tr[data-saved-basket-time="' + activeRowId + '"]').addClass('active-tr-row');
+			}
+
+			popup.modal('hide');
 			return false;
 		})
 		.on('click', '.basket-goods-return-saved', function() {
@@ -379,7 +439,19 @@ $(document).ready(function () {
 
 	var sendRequest = function() {
 		var requestBasket = getRequestBasket();
-		//send to server all request basket list
+
+		var xhr = $.ajax({
+			type: 'post',
+			url: 'addbasket',
+			data: 'requestBasket=' + JSON.stringify(requestBasket),
+			success: function(data) {
+				console.log(data);
+				//TODO: after request
+			},
+			//error: this.error,
+			dataType: 'json',
+			async: true
+		});
 	};
 
 	var clickPayButton = function(saved) {
@@ -683,6 +755,7 @@ $(document).ready(function () {
 
 		example.attr('data-saved-basket-time', savedBasket.date);
 		example.find('.saved-basket-date').html(dDate + '.' + dMonth + '.' + d.getFullYear() + ' ' + dHours + ':' + dMinuts + ':' + dSeconds);
+		example.find('.saved-basket-goods-note').html(savedBasket.note);
 
 		for(var val in basket) {
 			var item = $('.goods-item[data-id="' + val + '"]');
@@ -713,7 +786,7 @@ $(document).ready(function () {
 
 		if(basketGoodsCount) {
 			var dTime = (new Date()).getTime();
-			var addToSavedBasket = {date: dTime, basket: basket};
+			var addToSavedBasket = {date: dTime, basket: basket, note: ''};
 
 			addToListSavedBasket(addToSavedBasket);
 			savedBasket.push(addToSavedBasket);
@@ -723,6 +796,8 @@ $(document).ready(function () {
 			if(savedBasket.length == 1) {
 				$('.basket-goods-return-saved').removeClass('disabled');
 			}
+
+			return dTime;
 		}
 	};
 

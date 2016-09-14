@@ -208,14 +208,14 @@
 	padding: 30px;
 }
 
-#payPopup h3 span {
+.custom-modal h3 span {
 	font-size: 40px;
 	font-weight: bold;
 }
 
-#payPopup .modal-body .btn.pay-by-card,
-#payPopup .modal-body .btn.pay-by-cash,
-#payPopup .modal-body .btn.show-vip-list {
+.custom-modal .modal-body .btn.pay-by-card,
+.custom-modal .modal-body .btn.pay-by-cash,
+.custom-modal .modal-body .btn.show-vip-list {
 	padding: 30px;
 	margin: 0 25px;
 	font-size: 20px;
@@ -442,4 +442,22 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	text-align: left;
+}
+
+.saved-basket-goods-note,
+.saved-basket-goods-note:hover,
+.saved-basket-goods-note:focus,
+.saved-basket-goods-note:active {
+	border: 0;
+	border-bottom: 1px solid #DDD;
+	border-right: 1px solid #DDD;
+	border-radius: 0;
+	text-align: left;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.save-popup-btn {
+	margin-top: 10px;
 }

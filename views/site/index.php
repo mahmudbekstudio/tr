@@ -221,6 +221,7 @@ $this->params['bodyClass'] = 'dashboard';
                                                 <div class="custom-basket-table-td col-md-6 saved-basket-name"></div>
                                                 <div class="custom-basket-table-td col-md-2 saved-basket-total-price"></div>
                                                 <div class="custom-basket-table-td custom-saved-basket-table-td-action col-md-1"><a href="#" class="btn btn-default text-center saved-basket-goods-return"><i class="fa fa-reply-all" aria-hidden="true"></i></a></div>
+                                                <a href="#" class="btn btn-default saved-basket-goods-note clear">&nbsp;</a>
                                             </div>
                                             <div class="col-sm-12 custom-saved-basket-table-body-list">
 
@@ -365,7 +366,36 @@ $this->params['bodyClass'] = 'dashboard';
 
 
             <!-- Modal -->
-            <div class="modal fade" id="payPopup" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal fade custom-modal" id="savePopup" role="dialog" aria-labelledby="saveModalLabel" data-row-id="">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="saveModalLabel">Сохранить</h4>
+                        </div><!-- modal-header -->
+
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-sm-12 text-center">
+                                    <h3>Общая сумма: <span class="save-popup-total">21000</span></h3>
+                                    <textarea class="form-control save-popup-note"></textarea>
+                                </div><!-- col -->
+                            </div><!-- row -->
+
+                            <div class="row">
+                                <div class="col-sm-12 text-center">
+                                    <a href="#" class="btn btn-success btn-lg save-popup-btn">OK</a>
+                                </div><!-- col -->
+                            </div><!-- row -->
+
+                        </div><!-- modal-body -->
+
+                    </div><!-- modal-content -->
+                </div><!-- modal-dialog -->
+            </div><!-- stepTwoModal -->
+            <div class="modal fade custom-modal" id="payPopup" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
 

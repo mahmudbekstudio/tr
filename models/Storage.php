@@ -60,7 +60,8 @@ class Storage extends \yii\db\ActiveRecord
         return static::find()
             ->select(['goods_id'])
             ->where(['onsale' => $onSale, 'company_id' => \Yii::$app->params['companyId']])
+            ->andWhere(['not', "amount = 0"])
             ->groupBy(['goods_id'])
-            ->all();;
+            ->all();
     }
 }
