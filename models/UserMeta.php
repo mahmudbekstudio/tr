@@ -9,6 +9,7 @@ use Yii;
  *
  * @property string $id
  * @property string $user_id
+ * @property string $company_id
  * @property string $meta_key
  * @property string $meta_value
  */
@@ -28,8 +29,8 @@ class UserMeta extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'meta_key', 'meta_value'], 'required'],
-            [['user_id'], 'integer'],
+            [['user_id', 'company_id', 'meta_key', 'meta_value'], 'required'],
+            [['user_id', 'company_id'], 'integer'],
             [['meta_value'], 'string'],
             [['meta_key'], 'string', 'max' => 255],
         ];
@@ -43,6 +44,7 @@ class UserMeta extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'user_id' => 'User ID',
+            'company_id' => 'Company ID',
             'meta_key' => 'Meta Key',
             'meta_value' => 'Meta Value',
         ];

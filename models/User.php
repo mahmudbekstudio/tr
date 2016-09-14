@@ -96,8 +96,26 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         $rows = UserMeta::find()
             ->select('user_id')
             ->from('{{%user_meta}}')
-            ->where(['meta_key' => 'unique_company_' . \Yii::$app->params['companyId'] . '_pass', 'meta_value' => $password])
+            ->where(['meta_key' => 'unique_company_pass', 'company_id' => \Yii::$app->params['companyId'], 'meta_value' => $password])
             ->one();
         return $rows;
+    }
+
+    public static function getVipUsers() {
+        $rows = UserMeta::find()
+                        ->select('user_id')
+                        ->from('{{%user_meta}}')
+                        ->where(['meta_key' => 'vip_user', 'company_id' => \Yii::$app->params['companyId'], 'meta_value' => '1'])
+                        ->all();
+
+        $ids = array();
+        foreach($rows as $val) {
+            $ids[] = $val->user_id;
+        }
+
+        return self::find()
+            ->select('id, firstname, lastname')
+            ->where(['company_id' => \Yii::$app->params['companyId'], 'id' => $ids])
+            ->all();
     }
 }

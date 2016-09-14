@@ -159,7 +159,7 @@ $(document).ready(function () {
 				totalPrice += drawSaveItem(id, savedBasket.basket[id]);
 			}
 
-			rightSide.find('.checkout').find('.saved-basket-right-total-price').html(totalPrice);
+			rightSide.find('.checkout').find('.saved-basket-right-total-price').html(getMoney(totalPrice));
 
 			return false;
 		})
@@ -307,7 +307,168 @@ $(document).ready(function () {
 			$('.saved-basket-side').find('.custom-basket-table-tr[data-saved-basket-time="' + basketTime + '"]').find('.saved-basket-goods-return').trigger('click');
 
 			return false;
+		})
+		.on('click', '.basket-goods-pay', function() {
+			clickPayButton();
+			return false;
+		})
+		.on('click', '.saved-basket-goods-pay', function() {
+			clickPayButton(true);
+			return false;
+		})
+		.on('click', '.pay-by-card', function() {
+			payRequest('card');
+			return false;
+		})
+		.on('click', '.pay-by-cash', function() {
+			payRequest('cash');
+			return false;
+		})
+		.on('click', '.vip-user-item', function() {
+			var userId = $(this).attr('data-id');
+			payRequest('vip:' + userId);
+			return false;
 		});
+
+	$('#payPopup').on('hidden.bs.modal', function (e) {
+		var btn = $('.show-vip-list');
+		if(btn.siblings('.popover').length) {
+			btn.trigger('click');
+		}
+	});
+
+	$('.show-vip-list').popover({
+		content: $('#vipUsersList'),
+		html: true,
+		placement: 'top',
+		title: 'VIP'
+	});
+
+	var payRequest = function(type) {
+		var sendSaveBasket = getSendBasket();
+		var requestBasket = getRequestBasket();
+
+		sendSaveBasket.type = type;
+		requestBasket.push(sendSaveBasket);
+
+		if(sendSaveBasket.saved) {
+			var savedBasketList = getSavedBasket();
+			var newSavedBasket = [];
+
+			for(var val in savedBasketList) {
+				if(savedBasketList[val].date != sendSaveBasket.date) {
+					newSavedBasket.push(savedBasketList[val]);
+				}
+			}
+
+			setSavedBasket(newSavedBasket);
+			initSavedBasket();
+			hideSavedGoodsRightSide();
+		} else {
+			setBasket({});
+			initBasket();
+		}
+
+		setRequestBasket(requestBasket);
+		setSendBasket({});
+
+		$('#payPopup').modal('hide');
+
+		sendRequest();
+	};
+
+	var sendRequest = function() {
+		var requestBasket = getRequestBasket();
+		//send to server all request basket list
+	};
+
+	var clickPayButton = function(saved) {
+		var basket;
+		var dTime = (new Date()).getTime();
+		saved = saved || false;
+
+		if(saved) {
+			var basketTime = $('.saved-basket-side').find('.custom-basket-table-tr.active-tr-row').attr('data-saved-basket-time');
+			var savedBasketList = getSavedBasket();
+
+			for(var val in savedBasketList) {
+				if(basketTime == savedBasketList[val].date) {
+					basket = savedBasketList[val].basket;
+					dTime = savedBasketList[val].date;
+					break;
+				}
+			}
+		} else {
+			basket = getBasket();
+		}
+
+		basket = {date: dTime, saved: saved, basket: basket};
+		setSendBasket(basket);
+
+		openPayPopup();
+	};
+
+	var openPayPopup = function() {
+		var popup = $('#payPopup');
+		var sendBasket = getSendBasket();
+		var total = 0;
+
+		if(!sendBasket.basket) {
+			return false;
+		}
+
+		for(var id in sendBasket.basket) {
+			var info = getItemInfo(id);
+			total += sendBasket.basket[id] * info.price;
+		}
+
+		if(!total) {
+			return false;
+		}
+
+		popup.find('.pay-popup-total').html(getMoney(total));
+
+		popup.modal('show');
+	};
+
+	var getMoney = function(money) {
+		money = parseFloat(money);
+		return money.format(0, 3, ' ', ',');
+	};
+
+	var setRequestBasket = function(basket) {
+		$.cookie('requestBasket', JSON.stringify(basket));
+	};
+
+	var getRequestBasket = function() {
+		var basket = $.cookie('requestBasket');
+
+		if(!basket) {
+			basket = [];
+			setSendBasket(basket);
+		} else {
+			basket = $.parseJSON(basket);
+		}
+
+		return basket;
+	};
+
+	var setSendBasket = function(basket) {
+		$.cookie('sendBasket', JSON.stringify(basket));
+	};
+
+	var getSendBasket = function() {
+		var basket = $.cookie('sendBasket');
+
+		if(!basket) {
+			basket = {};
+			setSendBasket(basket);
+		} else {
+			basket = $.parseJSON(basket);
+		}
+
+		return basket;
+	};
 
 	var calcTotalPrice = function() {
 		var basket = getBasketCookie();
@@ -318,7 +479,7 @@ $(document).ready(function () {
 			total += parseFloat(basket[id]) * parseFloat(info['price']);
 		}
 
-		$('.basket-total-price').html(total);
+		$('.basket-total-price').html(getMoney(total));
 
 		var saveBtn = $('.basket-goods-save');
 		var payBtn = $('.basket-goods-pay');
@@ -377,15 +538,15 @@ $(document).ready(function () {
 			item = $('.custom-basket-table-tr.custom-basket-table-tr-example').clone(true).removeClass('custom-basket-table-tr-example hidden');
 			item.attr('data-goods-id', id);
 			item.find('.goods-name').text(itemInfo['name']);
-			item.find('.goods-price').text(itemInfo['price']);
+			item.find('.goods-price').text(getMoney(itemInfo['price']));
 			$('.custom-basket-table-body-list').append(item);
 		}
 
 		item.find('.goods-count').find('.value').text(n);
-		item.find('.goods-total-price').text(parseFloat(n) * parseFloat(itemInfo['price']));
+		item.find('.goods-total-price').text(getMoney(parseFloat(n) * parseFloat(itemInfo['price'])));
 
 		var tdList = item.find('.custom-basket-table-td');
-		tdList.addClass('added');
+		tdList.removeClass('added').addClass('added');
 		setTimeout(function() {
 			tdList.removeClass('added');
 		}, 500);
@@ -540,7 +701,7 @@ $(document).ready(function () {
 		}
 
 		example.find('.saved-basket-name').html(basketHave);
-		example.find('.saved-basket-total-price').html(basketTotal);
+		example.find('.saved-basket-total-price').html(getMoney(basketTotal));
 
 		$('.custom-saved-basket-table-body-list').append(example);
 	};
@@ -594,12 +755,12 @@ $(document).ready(function () {
 			item = $('.custom-saved-basket-table-right-tr-example').clone(true).removeClass('custom-saved-basket-table-right-tr-example hidden');
 			item.attr('data-goods-id', id);
 			item.find('.right-goods-name').text(itemInfo['name']);
-			item.find('.right-goods-price').text(itemInfo['price']);
+			item.find('.right-goods-price').text(getMoney(itemInfo['price']));
 			side.find('.custom-saved-basket-table-right-body-list').append(item);
 		}
 
 		item.find('.right-goods-count').find('.saved-value').text(n);
-		item.find('.right-goods-total-price').text(totalPrice);
+		item.find('.right-goods-total-price').text(getMoney(totalPrice));
 
 		return totalPrice;
 	};

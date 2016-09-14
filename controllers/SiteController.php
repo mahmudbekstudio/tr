@@ -72,8 +72,9 @@ class SiteController extends Controller
         $categories = new Category();
         $goodsIds = Storage::getAllGoodsIds();
         $goods = Goods::getAllGoodsByIds($goodsIds);
+        $vipUsersList = User::getVipUsers();
 
-        return $this->render('index', array('categoryList' => $categories->getAll(), 'goodsList' => $goods));
+        return $this->render('index', array('categoryList' => $categories->getAll(), 'goodsList' => $goods, 'vipUsersList' => $vipUsersList));
     }
 
     /**

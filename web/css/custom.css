@@ -208,12 +208,14 @@
 	padding: 30px;
 }
 
-#stepTwoModal h3 span {
+#payPopup h3 span {
 	font-size: 40px;
 	font-weight: bold;
 }
 
-#stepTwoModal .modal-body .btn {
+#payPopup .modal-body .btn.pay-by-card,
+#payPopup .modal-body .btn.pay-by-cash,
+#payPopup .modal-body .btn.show-vip-list {
 	padding: 30px;
 	margin: 0 25px;
 	font-size: 20px;
@@ -418,4 +420,26 @@
 .custom-basket-table-td .saved-value {
 	display: inline-block;
 	min-width: 30px;
+}
+
+.vip-users-list {
+	width: 240px;
+	height: 180px;
+	overflow: auto;
+}
+
+.vip-users-list ul,
+.vip-users-list li {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.vip-users-list .vip-user-item {
+	display: block;
+	margin-bottom: 10px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-align: left;
 }

@@ -193,7 +193,7 @@ $this->params['bodyClass'] = 'dashboard';
                                             <a href="#" class="btn btn-lg btn-info basket-goods-return-saved"><i class="fa fa-lg fa-arrow-circle-up"></i> <span class="hidden-sm hidden-xs hidden-md">Вызвать</span></a>
                                         </div>
                                         <div class="col-sm-3 text-center">
-                                            <a href="#" class="btn btn-lg btn-success basket-goods-pay" data-toggle="modal" data-target="#stepTwoModal"><i class="fa fa-lg fa-money" aria-hidden="true"></i> <span class="hidden-sm hidden-xs hidden-md">Оплатить</span></a>
+                                            <a href="#" class="btn btn-lg btn-success basket-goods-pay"><i class="fa fa-lg fa-money" aria-hidden="true"></i> <span class="hidden-sm hidden-xs hidden-md">Оплатить</span></a>
                                         </div>
                                     </div><!-- row -->
                                 </section><!-- buttons -->
@@ -280,8 +280,8 @@ $this->params['bodyClass'] = 'dashboard';
                                                                     <img style="background-image: url('<?php echo Yii::$app->urlManager->baseUrl; ?>/<?php echo $val['pic'] ?>')" src="<?php echo Yii::$app->urlManager->baseUrl; ?>/img/thumb-image.png" alt="<?php echo $val['name'] ?>" class="img-responsive" title="<?php echo $val['name'] ?>">
                                                                     <div class="caption">
                                                                         <strong class="goods-item-title" title="<?php echo $val['name'] ?>"><?php echo $val['name'] ?></strong>
-                                                                        <span class="price"><?php echo $val['sell_price'] ?> so`m</span>
-                                                                        <span class="price-shadow"><?php echo $val['sell_price'] ?> so`m</span>
+                                                                        <span class="price"><?php echo number_format($val['sell_price'], 0, ',', ' ') ?></span>
+                                                                        <span class="price-shadow"><?php echo number_format($val['sell_price'], 0, ',', ' ') ?></span>
                                                                     </div>
                                                                 </div>
                                                             </a>
@@ -352,7 +352,7 @@ $this->params['bodyClass'] = 'dashboard';
                                             <a href="#" class="btn btn-lg btn-info saved-basket-goods-right-return"><i class="fa fa-lg fa-reply-all"></i> <span class="hidden-sm hidden-xs hidden-md">Восстановить</span></a>
                                         </div><!-- col -->
                                         <div class="col-sm-4 text-center">
-                                            <a href="#" class="btn btn-lg btn-success basket-goods-pay" data-toggle="modal" data-target="#stepTwoModal"><i class="fa fa-lg fa-money" aria-hidden="true"></i> <span class="hidden-sm hidden-xs hidden-md">Оплатить</span></a>
+                                            <a href="#" class="btn btn-lg btn-success saved-basket-goods-pay"><i class="fa fa-lg fa-money" aria-hidden="true"></i> <span class="hidden-sm hidden-xs hidden-md">Оплатить</span></a>
                                         </div>
                                     </div><!-- row -->
                                 </section><!-- buttons -->
@@ -365,7 +365,7 @@ $this->params['bodyClass'] = 'dashboard';
 
 
             <!-- Modal -->
-            <div class="modal fade" id="stepTwoModal" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal fade" id="payPopup" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
 
@@ -378,16 +378,16 @@ $this->params['bodyClass'] = 'dashboard';
 
                             <div class="row">
                                 <div class="col-sm-12 text-center">
-                                    <h3>Общая сумма: <span>21000</span></h3>
-                                    <a href="#" class="btn btn-lg btn-success"><i class="fa fa-4x fa-credit-card"></i></a>
-                                    <a href="#" class="btn btn-lg btn-success"><i class="fa fa-4x fa-money"></i></a>
+                                    <h3>Общая сумма: <span class="pay-popup-total">21000</span></h3>
+                                    <a href="#" class="btn btn-lg btn-success pay-by-card"><i class="fa fa-4x fa-credit-card"></i></a>
+                                    <a href="#" class="btn btn-lg btn-success pay-by-cash"><i class="fa fa-4x fa-money"></i></a>
                                 </div><!-- col -->
                             </div><!-- row -->
 
                             <div class="row">
                                 <div class="col-sm-12 text-center">
                                     <h4>Другие</h4>
-                                    <a href="#" class="btn btn-lg btn-default">VIP #1</a>
+                                    <a href="#" class="btn btn-lg btn-default show-vip-list">VIP #1</a>
                                 </div><!-- col -->
                             </div><!-- row -->
 
@@ -398,5 +398,14 @@ $this->params['bodyClass'] = 'dashboard';
             </div><!-- stepTwoModal -->
         </div>
 
+    </div>
+</div>
+<div class="hidden">
+    <div id="vipUsersList" class="vip-users-list">
+        <ul>
+            <?php foreach($vipUsersList as $u) : ?>
+                <li><a href="#" class="btn btn-default vip-user-item" data-id="<?php echo $u->id; ?>"><?php echo $u->firstname . ' ' . $u->lastname ?></a></li>
+            <?php endforeach; ?>
+        </ul>
     </div>
 </div>

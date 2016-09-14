@@ -39,6 +39,7 @@ class AppAsset extends AssetBundle
         'js/plugins/iCheck/icheck.min.js',
         'js/inspinia.js',
         'js/plugins/pace/pace.min.js',
+        'js/extends.js',
         'js/scripts.js',
     ];
     public $depends = [
