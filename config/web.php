@@ -49,6 +49,7 @@ $config = [
 			'enablePrettyUrl' => true,
 			'showScriptName' => false,
 			'rules' => [
+				'statistics' => 'admin/default/statistics',
 				'<view>'        => 'site/<view>'
 			],
 		],

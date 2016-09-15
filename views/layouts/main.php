@@ -21,7 +21,7 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="<?php echo $this->params['bodyClass']; ?>">
+<body class="<?php echo (isset($this->params['bodyClass']) ? $this->params['bodyClass'] : ''); ?>">
 <?php $this->beginBody() ?>
 <?= $content ?>
 <?php /*<div class="wrap">
