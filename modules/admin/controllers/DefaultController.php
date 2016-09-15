@@ -47,7 +47,7 @@ class DefaultController extends Controller
         $goods = new Goods();
         $goodsList = $goods->findAll(['company_id' => \Yii::$app->params['companyId']]);
         $sold = new Sold();
-        $soldGoods = $sold->findAll(['company_id' => \Yii::$app->params['companyId']]);
+        $soldGoods = $sold->find()->where(['company_id' => \Yii::$app->params['companyId']])->orderBy(['sold_date' => SORT_ASC])->all();
         $user = new User();
         $userList = $user->findAll(['company_id' => \Yii::$app->params['companyId']]);
         $listGoods = array();

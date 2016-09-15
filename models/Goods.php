@@ -34,7 +34,7 @@ class Goods extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['company_id', 'name', 'pic', 'price', 'sell_price', 'category_id'], 'required'],
+            [['company_id', 'name', 'pic', 'price', 'sell_price', 'category_id', 'ordering'], 'required'],
             [['company_id', 'category_id'], 'integer'],
             [['price', 'percent', 'sell_price'], 'number'],
             [['code', 'name', 'pic'], 'string', 'max' => 255],
@@ -58,6 +58,7 @@ class Goods extends \yii\db\ActiveRecord
             'sell_price' => 'Sell Price',
             'category_id' => 'Category ID',
             'unit' => 'Unit',
+            'ordering' => 'Ordering'
         ];
     }
 
@@ -68,6 +69,7 @@ class Goods extends \yii\db\ActiveRecord
         }
         return static::find()
             ->where(['and', 'company_id' => \Yii::$app->params['companyId'], $idsWhere])
+            ->orderBy(['ordering' => SORT_ASC])
             ->all();
     }
 }
