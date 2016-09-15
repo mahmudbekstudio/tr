@@ -487,7 +487,8 @@ $(document).ready(function () {
 
 	var clickPayButton = function(saved) {
 		var basket;
-		var dTime = (new Date()).getTime();
+		var dTime = Math.round((new Date()).getTime() / 1000);
+		var userId = $('.current-user-dashboard').attr('data-user-id');
 		saved = saved || false;
 
 		if(saved) {
@@ -505,7 +506,14 @@ $(document).ready(function () {
 			basket = getBasket();
 		}
 
-		basket = {date: dTime, saved: saved, basket: basket};
+		var newBasket = {};
+		for(var id in basket) {
+			if(basket[id] > 0) {
+				newBasket[id] = basket[id];
+			}
+		}
+
+		basket = {date: dTime, saved: saved, basket: newBasket, userId: userId};
 		setSendBasket(basket);
 
 		openPayPopup();
@@ -548,7 +556,7 @@ $(document).ready(function () {
 
 		if(!basket) {
 			basket = [];
-			setSendBasket(basket);
+			setRequestBasket(basket);
 		} else {
 			basket = $.parseJSON(basket);
 		}
@@ -816,7 +824,7 @@ $(document).ready(function () {
 		var basketGoodsCount = getGoodsCount();
 
 		if(basketGoodsCount) {
-			var dTime = (new Date()).getTime();
+			var dTime = Math.round((new Date()).getTime() / 1000);
 			var addToSavedBasket = {date: dTime, basket: basket, note: ''};
 
 			addToListSavedBasket(addToSavedBasket);

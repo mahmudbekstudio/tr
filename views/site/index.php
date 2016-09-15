@@ -7,7 +7,7 @@ use yii\helpers\Url;
 $this->title = 'Dashboard';
 $this->params['bodyClass'] = 'dashboard';
 ?>
-<div id="wrapper">
+<div id="wrapper" class="current-user-dashboard" data-user-id="<?php echo Yii::$app->user->id ?>">
 
     <div id="page-wrapper" class="white-bg">
         <div class="row border-bottom">

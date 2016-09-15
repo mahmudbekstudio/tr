@@ -93,7 +93,7 @@ class SiteController extends Controller
         $rows = array();
         foreach($requestBasket as $val) {
             foreach($val->basket as $id => $amount) {
-                $rows[] = array('id' => $id, 'amount' => $amount, 'date' => $val->date, 'type' => $val->type);
+                $rows[] = array('id' => $id, 'amount' => $amount, 'date' => $val->date, 'type' => $val->type, 'userId' => $val->userId);
             }
             $result[] = array('date' => $val->date, 'saved' => $val->saved);
         }
