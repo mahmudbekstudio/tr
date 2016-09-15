@@ -14,9 +14,20 @@ use Yii;
  * @property string $amount
  * @property string $sold_date
  * @property string $paid
+ * @property string $paid_type
  */
 class Sold extends \yii\db\ActiveRecord
 {
+    private $_user_id;
+    private $_company_id;
+
+    public function __construct( array $config = [] ) {
+        parent::__construct( $config );
+
+        $this->_user_id = \Yii::$app->user->id;
+        $this->_company_id = \Yii::$app->params['companyId'];
+    }
+
     /**
      * @inheritdoc
      */
@@ -54,5 +65,17 @@ class Sold extends \yii\db\ActiveRecord
             'paid' => 'Paid',
             'paid_type' => 'Paid type',
         ];
+    }
+
+    public function addGoods($rows) {
+        $list = array();
+        foreach($rows as $val) {
+            $list[] = array(null, $this->_company_id, $this->_user_id, $val['id'], $val['amount'], $val['date'], '1', $val['type']);
+        }
+
+        Yii::$app->db->createCommand()->batchInsert(self::tableName(), $this->attributes(), $list)->execute();
+
+        $storage = new Storage();
+        $storage->addGoods($rows);
     }
 }

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Category;
 use app\models\Goods;
+use app\models\Sold;
 use app\models\Storage;
 use app\models\User;
 use app\models\UserMeta;
@@ -87,10 +88,17 @@ class SiteController extends Controller
         $requestBasket = $request->post('requestBasket');
         $requestBasket = json_decode($requestBasket);
         $result = [];
+        $sold = new Sold();
 
+        $rows = array();
         foreach($requestBasket as $val) {
-            $result[] = $val->date;
+            foreach($val->basket as $id => $amount) {
+                $rows[] = array('id' => $id, 'amount' => $amount, 'date' => $val->date, 'type' => $val->type);
+            }
+            $result[] = array('date' => $val->date, 'saved' => $val->saved);
         }
+
+        $sold->addGoods($rows);
 
         return \yii\helpers\Json::encode($result);
     }

@@ -22,7 +22,10 @@ $this->params['bodyClass'] = 'dashboard';
                 </div>*/ ?>
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
-                        <span class="m-r-sm text-muted welcome-message">Welcome to INSPINIA+ Admin Theme.</span>
+                        <span class="m-r-sm text-muted welcome-message"><?php
+                            $user = Yii::$app->user->getIdentity();
+                            echo $user->firstname . ' ' . $user->lastname;
+                            ?></span>
                     </li>
                     <?php /*<li class="dropdown">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
@@ -123,7 +126,7 @@ $this->params['bodyClass'] = 'dashboard';
 
                     <li>
                         <a href="<?php echo Url::to('site/logout') ?>">
-                            <i class="fa fa-sign-out"></i> Log out
+                            <i class="fa fa-sign-out"></i> Выйти
                         </a>
                     </li>
                 </ul>
@@ -184,7 +187,14 @@ $this->params['bodyClass'] = 'dashboard';
 
                                     <div class="row">
                                         <div class="col-sm-3 text-center">
-                                            <a href="#" class="btn btn-lg btn-default basket-goods-clear"><i class="fa fa-lg fa-trash"></i> <span class="hidden-sm hidden-xs hidden-md">Отмена</span></a>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <a href="#" class="btn btn-lg btn-link other-menu-items"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <a href="#" class="btn btn-lg btn-default basket-goods-clear"><i class="fa fa-lg fa-trash"></i> <span class="hidden-sm hidden-xs hidden-md">Отмена</span></a>
+                                                </div>
+                                            </div>
                                         </div><!-- col -->
                                         <div class="col-sm-3 text-center">
                                             <a href="#" class="btn btn-lg btn-warning basket-goods-save"><i class="fa fa-lg fa-save"></i> <span class="hidden-sm hidden-xs hidden-md">Сохранить</span></a>
@@ -436,6 +446,13 @@ $this->params['bodyClass'] = 'dashboard';
             <?php foreach($vipUsersList as $u) : ?>
                 <li><a href="#" class="btn btn-default vip-user-item" data-id="<?php echo $u->id; ?>"><?php echo $u->firstname . ' ' . $u->lastname ?></a></li>
             <?php endforeach; ?>
+        </ul>
+    </div>
+</div>
+<div class="hidden">
+    <div id="otherMenuItems" class="other-menu-items">
+        <ul>
+            <li><a href="#" class="btn btn-default other-menu-item other-menu-item-return">Возврат</a></li>
         </ul>
     </div>
 </div>

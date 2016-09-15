@@ -64,4 +64,33 @@ class Storage extends \yii\db\ActiveRecord
             ->groupBy(['goods_id'])
             ->all();
     }
+
+    public function addGoods($rows) {
+        $ids = array();
+        $newRows = array();
+        foreach($rows as $val) {
+            $ids[] = $val['id'];
+            $newRows[$val['id']] = $val;
+        }
+
+        $goodsList = $this->findAll(['goods_id' => $ids]);
+        $newGoodsList = array();
+        foreach($goodsList as $val) {
+            $goodsItem = array();
+            foreach($val as $key => $val) {
+                $goodsItem[$key] = $val;
+            }
+            $newGoodsList[] = $goodsItem;
+        }
+
+        foreach($newGoodsList as $key => $val) {
+            if($newGoodsList[$key]['amount'] != -1) {
+                $newGoodsList[$key]['amount'] -= $newRows[$newGoodsList[$key]['goods_id']]['amount'];
+            }
+        }
+
+        $this->deleteAll(['goods_id' => $ids]);
+
+        Yii::$app->db->createCommand()->batchInsert(self::tableName(), $this->attributes(), $newGoodsList)->execute();
+    }
 }

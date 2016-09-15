@@ -388,6 +388,18 @@ $(document).ready(function () {
 			var userId = $(this).attr('data-id');
 			payRequest('vip:' + userId);
 			return false;
+		})
+		.on('click', '.other-menu-item-return', function() {
+			alert('В разработке');
+			return false;
+		})
+		.on('show.bs.popover', '.other-menu-items', function() {
+			var btn = $(this);
+			setTimeout(function() {
+				if(btn.siblings('.popover').length) {
+					btn.trigger('click');
+				}
+			}, 5000);
 		});
 
 	$('#payPopup').on('hidden.bs.modal', function (e) {
@@ -395,6 +407,13 @@ $(document).ready(function () {
 		if(btn.siblings('.popover').length) {
 			btn.trigger('click');
 		}
+	});
+
+	$('.other-menu-items').popover({
+		content: $('#otherMenuItems').clone(true),
+		html: true,
+		placement: 'top',
+		title: 'MENU'
 	});
 
 	$('.show-vip-list').popover({
@@ -445,8 +464,20 @@ $(document).ready(function () {
 			url: 'addbasket',
 			data: 'requestBasket=' + JSON.stringify(requestBasket),
 			success: function(data) {
-				console.log(data);
-				//TODO: after request
+				for(var val in data) {
+					if(data[val].date) {
+						var newRequestBasketList = [];
+
+						for(var valItem in requestBasket) {
+							if(requestBasket[valItem].date != data[val].date) {
+								newRequestBasketList.push(requestBasket[valItem]);
+							}
+						}
+
+						requestBasket = newRequestBasketList;
+						setRequestBasket(newRequestBasketList);
+					}
+				}
 			},
 			//error: this.error,
 			dataType: 'json',

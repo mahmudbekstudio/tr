@@ -429,13 +429,16 @@
 }
 
 .vip-users-list ul,
-.vip-users-list li {
+.vip-users-list li,
+.other-menu-items ul,
+.other-menu-items li {
 	padding: 0;
 	margin: 0;
 	list-style: none;
 }
 
-.vip-users-list .vip-user-item {
+.vip-users-list .vip-user-item,
+.other-menu-items .other-menu-item {
 	display: block;
 	margin-bottom: 10px;
 	overflow: hidden;
