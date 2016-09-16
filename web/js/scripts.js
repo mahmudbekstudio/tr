@@ -547,12 +547,20 @@ $(document).ready(function () {
 		return money.format(0, 3, ' ', ',');
 	};
 
+	var setCookie = function(name, val) {
+		$.cookie(name, JSON.stringify(val), { expires: 7 });
+	};
+
+	var getCookie = function(name) {
+		return $.cookie(name);
+	};
+
 	var setRequestBasket = function(basket) {
-		$.cookie('requestBasket', JSON.stringify(basket));
+		setCookie('requestBasket', basket);
 	};
 
 	var getRequestBasket = function() {
-		var basket = $.cookie('requestBasket');
+		var basket = getCookie('requestBasket');
 
 		if(!basket) {
 			basket = [];
@@ -565,11 +573,11 @@ $(document).ready(function () {
 	};
 
 	var setSendBasket = function(basket) {
-		$.cookie('sendBasket', JSON.stringify(basket));
+		setCookie('sendBasket', basket)
 	};
 
 	var getSendBasket = function() {
-		var basket = $.cookie('sendBasket');
+		var basket = getCookie('sendBasket');
 
 		if(!basket) {
 			basket = {};
@@ -687,7 +695,7 @@ $(document).ready(function () {
 	};
 
 	var checkBasket = function() {
-		var basket = $.cookie('basket');
+		var basket = getCookie('basket');
 
 		if(!basket) {
 			basket = {};
@@ -704,7 +712,7 @@ $(document).ready(function () {
 	};
 
 	var setBasket = function(basket) {
-		$.cookie('basket', JSON.stringify(basket));
+		setCookie('basket', basket);
 	};
 
 	var getBasketCookie = function(id) {
@@ -747,11 +755,11 @@ $(document).ready(function () {
 	};
 
 	var setSavedBasket = function(savedBasket) {
-		$.cookie('savedBasket', JSON.stringify(savedBasket));
+		setCookie('savedBasket', savedBasket);
 	};
 
 	var getSavedBasket = function() {
-		var savedBasket = $.cookie('savedBasket');
+		var savedBasket = getCookie('savedBasket');
 
 		if(!savedBasket) {
 			savedBasket = [];
