@@ -9,6 +9,12 @@ $config = [
 	'bootstrap' => ['log'],
 	'language' => 'en-EN',
 	'components' => [
+		'view' => [
+			'theme' => [
+				'pathMap' => ['@app/views' => '@webroot/themes/cafe'],
+				//'baseUrl' => '@web/themes/test',
+			],
+		],
 		'assetManager' => [
 			'class'=>'yii\web\AssetManager',
 			'linkAssets'=>true,
