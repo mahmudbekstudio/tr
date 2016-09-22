@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Category;
 use app\models\Goods;
+use app\models\Returns;
 use app\models\Sold;
 use app\models\Storage;
 use app\models\User;
@@ -89,14 +90,26 @@ class SiteController extends Controller
         $requestBasket = json_decode($requestBasket);
         $result = [];
         $sold = new Sold();
+        $return = new Returns();
 
         $rows = array();
+        $returnRows = array();
         foreach($requestBasket as $val) {
-            foreach($val->basket as $id => $amount) {
-                $rows[] = array('id' => $id, 'amount' => $amount, 'date' => $val->date, 'type' => $val->type, 'userId' => $val->userId);
+            if(isset($val->isReturn)) {
+                foreach($val->basket as $id => $amount) {
+                    $returnRows[] = array('id' => $id, 'amount' => $amount, 'date' => $val->date, 'note' => $val->note, 'userId' => $val->userId);
+                }
+            } else {
+                foreach($val->basket as $id => $amount) {
+                    $rows[] = array('id' => $id, 'amount' => $amount, 'date' => $val->date, 'type' => $val->type, 'userId' => $val->userId);
+                }
             }
+
             $result[] = array('date' => $val->date, 'saved' => $val->saved);
         }
+
+
+        $return->addGoods($returnRows);
 
         $sold->addGoods($rows);
 

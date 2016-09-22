@@ -257,6 +257,64 @@ $this->params['bodyClass'] = 'dashboard';
                             </div>
                         </div>
 
+                        <div class="col-sm-6 site-content-col1 return-basket-side">
+                            <div class="basket">
+                                <div class="basket-table">
+                                    <div class="custom-basket-table clearfix">
+                                        <div class="custom-basket-table-head">
+                                            <div class="col-sm-12">
+                                                <div class="custom-basket-table-tr row">
+                                                    <div class="custom-basket-table-th col-sm-4">Название</div>
+                                                    <div class="custom-basket-table-th col-sm-3">Кол-во</div>
+                                                    <div class="custom-basket-table-th col-sm-2">Цена</div>
+                                                    <div class="custom-basket-table-th col-sm-2">Сумма</div>
+                                                    <div class="custom-basket-table-th col-sm-1"><a href="#" class="btn btn-default text-center return-basket-goods-clear">X</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="custom-basket-table-body clearfix ">
+                                            <div class="custom-return-basket-table-tr row custom-return-basket-table-tr-example hidden" data-goods-id="">
+                                                <div class="custom-basket-table-td col-md-4 custom-basket-table-td-title goods-name"></div>
+                                                <div class="custom-basket-table-td col-md-3 goods-count"><a href="#" class="btn btn-default text-center basket-goods-remove">–</a> <span class="value"></span> <a href="#" class="btn btn-default text-center basket-goods-add">+</a></div>
+                                                <div class="custom-basket-table-td col-md-2 goods-price"></div>
+                                                <div class="custom-basket-table-td col-md-2 goods-total-price"></div>
+                                                <div class="custom-basket-table-td custom-basket-table-td-action col-md-1"><a href="#" class="btn btn-default text-center basket-goods-item-remove">–</a></div>
+                                            </div>
+                                            <div class="col-sm-12 custom-return-basket-table-body-list">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="checkout">
+                                <section class="buttons">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table class="table table-bordered table-responsive">
+
+                                                <tr>
+                                                    <td class="col-sm-6">Итого</td>
+                                                    <td class="col-sm-6 return-basket-total-price">0</td>
+                                                </tr>
+
+                                            </table>
+                                        </div><!-- col -->
+                                    </div><!-- row -->
+
+                                    <div class="row">
+                                        <div class="col-sm-6 text-center">
+                                            <a href="#" class="btn btn-lg btn-default return-basket-goods-clear"><i class="fa fa-lg fa-trash"></i> <span class="hidden-sm hidden-xs hidden-md">Отмена</span></a>
+                                        </div><!-- col -->
+                                        <div class="col-sm-6 text-center">
+                                            <a href="#" class="btn btn-lg btn-success open-return-basket-goods-send disabled"><i class="fa fa-undo" aria-hidden="true"></i> <span class="hidden-sm hidden-xs hidden-md">Возвращать</span></a>
+                                        </div>
+                                    </div><!-- row -->
+                                </section><!-- buttons -->
+                            </div>
+                        </div>
+
                         <div class="col-sm-6 site-content-col2 goods-right-side">
                             <section class="categories">
 
@@ -376,6 +434,44 @@ $this->params['bodyClass'] = 'dashboard';
 
 
             <!-- Modal -->
+            <div class="modal fade custom-modal" id="returnPopup" role="dialog" aria-labelledby="returnModalLabel" data-row-id="">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="returnModalLabel">Возвращать</h4>
+                        </div><!-- modal-header -->
+
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-sm-12 text-center">
+                                    <h3>Общая сумма: <span class="save-popup-total">21000</span></h3>
+                                    <p>
+                                        <select class="form-control return-basket-note-select">
+                                            <option>Taom yoqmadi</option>
+                                            <option>Taomdan narsa chiqdi</option>
+                                            <option>Boshqa sababga ko'ra</option>
+                                        </select>
+                                    </p>
+                                    <p>
+                                        <textarea class="form-control return-basket-note-text"></textarea>
+                                    </p>
+                                </div><!-- col -->
+                            </div><!-- row -->
+
+                            <div class="row">
+                                <div class="col-sm-12 text-center">
+                                    <p><a href="#" class="btn btn-success btn-lg return-basket-goods-send">OK</a></p>
+                                </div><!-- col -->
+                            </div><!-- row -->
+
+                        </div><!-- modal-body -->
+
+                    </div><!-- modal-content -->
+                </div><!-- modal-dialog -->
+            </div><!-- stepTwoModal -->
             <div class="modal fade custom-modal" id="savePopup" role="dialog" aria-labelledby="saveModalLabel" data-row-id="">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -452,7 +548,7 @@ $this->params['bodyClass'] = 'dashboard';
 <div class="hidden">
     <div id="otherMenuItems" class="other-menu-items">
         <ul>
-            <li><a href="#" class="btn btn-default other-menu-item other-menu-item-return">Возврат</a></li>
+            <li><a href="#" class="btn btn-link other-menu-item other-menu-item-return" style="text-align: left">Возврат</a></li>
         </ul>
     </div>
 </div>

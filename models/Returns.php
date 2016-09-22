@@ -54,4 +54,17 @@ class Returns extends \yii\db\ActiveRecord
             'description' => 'Description',
         ];
     }
+
+    public function addGoods($rows) {
+        $list = array();
+        $companyId = \Yii::$app->params['companyId'];
+        foreach($rows as $val) {
+            $list[] = array(null, $companyId, $val['userId'], $val['id'], $val['amount'], $val['date'], $val['note']);
+        }
+
+        Yii::$app->db->createCommand()->batchInsert(self::tableName(), $this->attributes(), $list)->execute();
+
+        $storage = new Storage();
+        $storage->addGoods($rows);
+    }
 }

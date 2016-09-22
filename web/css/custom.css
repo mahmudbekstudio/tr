@@ -108,6 +108,7 @@
 }
 
 .site-content-col1.saved-basket-side,
+.site-content-col1.return-basket-side,
 .site-content-col2.saved-goods-right-side {
 	display: none;
 	height: auto;
@@ -300,7 +301,8 @@
 	text-align: left;
 }
 
-.custom-basket-table .custom-basket-table-tr {
+.custom-basket-table .custom-basket-table-tr,
+.custom-basket-table .custom-return-basket-table-tr {
 	border-left: #ddd 1px solid;
 }
 
@@ -376,6 +378,14 @@
 
 .saved-basket-side .basket {
 	padding-bottom: 110px;
+}
+
+.return-basket-side .basket {
+	padding-bottom: 175px
+}
+
+.return-basket-side .checkout {
+	height: 175px
 }
 
 .saved-basket-name,
