@@ -146,7 +146,7 @@ class SiteController extends Controller
     }
 
     private function checkSystemLogin() {
-        $cookies = $_COOKIE || array();
+        $cookies = $_COOKIE;
         $systemLogin = isset($cookies['systemLogin']) ? $cookies['systemLogin'] : false;
 
         if($systemLogin) {
