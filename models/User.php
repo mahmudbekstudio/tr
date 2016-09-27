@@ -57,18 +57,23 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id]);
+        return static::findOne(['id' => $id, 'company_id' => \Yii::$app->params['companyId']]);
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['accessToken' => $token]);
+        return static::findOne(['accessToken' => $token, 'company_id' => \Yii::$app->params['companyId']]);
         //throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username]);
+        return static::findOne(['username' => $username, 'company_id' => \Yii::$app->params['companyId']]);
+    }
+
+    public static function findByEmail($email)
+    {
+        return static::findOne(['email' => $email, 'company_id' => \Yii::$app->params['companyId']]);
     }
 
     public function getId()

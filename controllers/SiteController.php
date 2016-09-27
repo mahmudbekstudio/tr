@@ -67,6 +67,12 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $systemLogin = $this->checkSystemLogin();
+
+        if(!$systemLogin) {
+            return $this->render('systemlogin');
+        }
+
         if (Yii::$app->user->isGuest) {
             return $this->redirect(array('site/login'));
         }
@@ -116,6 +122,50 @@ class SiteController extends Controller
         return \yii\helpers\Json::encode($result);
     }
 
+    public function actionSystemlogin() {
+        $systemLogin = $this->checkSystemLogin();
+
+        if ($systemLogin) {
+            return $this->goHome();
+        }
+
+        $result = array('status' => false, 'error' => '', 'access' => '');
+        $post = Yii::$app->request->post('systemLogin');
+        $user = User::findByEmail($post['email']);
+
+        if(!empty($user) && Yii::$app->getSecurity()->validatePassword($post['password'], $user->pass)) {
+            $result['status'] = true;
+            $result['access'] = $this->getSystemLoginHash($user);
+        }
+
+        return \yii\helpers\Json::encode($result);
+    }
+
+    private function getSystemLoginHash($user) {
+        return $user->id . 'id' . md5($user->id . 'id' . $user->email . $user->email . $user->registered);
+    }
+
+    private function checkSystemLogin() {
+        $cookies = $_COOKIE;
+        $systemLogin = isset($cookies['systemLogin']) ? $cookies['systemLogin'] : false;
+
+        if($systemLogin) {
+            $systemLoginId = (int)addslashes(trim(substr($systemLogin, 0, strpos($systemLogin, 'id'))));
+            $user = User::findIdentity($systemLoginId);
+
+            if(!empty($user)) {
+                $systemLoginHash = $this->getSystemLoginHash($user);
+                $systemLogin = $systemLogin === $systemLoginHash;
+            } else {
+                $systemLogin = false;
+            }
+
+
+        }
+
+        return $systemLogin;
+    }
+
     /**
      * Login action.
      *
@@ -123,7 +173,9 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
+        $systemLogin = $this->checkSystemLogin();
+
+        if (!$systemLogin || !Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
