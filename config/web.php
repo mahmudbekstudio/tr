@@ -11,12 +11,12 @@ $config = [
 	'components' => [
 		'view' => [
 			'theme' => [
-				'basePath' => '@app/themes/' . (defined('COMPANY_THEME') ? COMPANY_THEME : 'default'),
+				/*'basePath' => '@app/themes/' . (defined('COMPANY_THEME') ? COMPANY_THEME : 'default'),
 				'baseUrl' => '@web/themes/' . (defined('COMPANY_THEME') ? COMPANY_THEME : 'default'),
 				'pathMap' => [
 					'@app/views' => '@app/themes/' . (defined('COMPANY_THEME') ? COMPANY_THEME : 'default'),
-				],
-				//'pathMap' => ['@app/views' => '@webroot/themes/cafe'],
+				],*/
+				'pathMap' => ['@app/views' => '@webroot/themes/' . (defined('COMPANY_THEME') ? COMPANY_THEME : 'default')],
 				//'baseUrl' => '@web/themes/test',
 			],
 		],

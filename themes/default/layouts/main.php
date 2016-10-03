@@ -1,1 +1,0 @@
-<h1>Trade Poster</h1>
