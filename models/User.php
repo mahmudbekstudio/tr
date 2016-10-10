@@ -24,7 +24,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['company_id', 'email', 'pass', 'firstname', 'lastname', 'registered', 'authKey', 'accessToken', 'username'], 'required'],
             [['company_id', 'role', 'status'], 'integer'],
             [['registered'], 'safe'],
-            [['email', 'pass', 'firstname', 'lastname', 'authKey', 'accessToken', 'username'], 'string', 'max' => 255],
+            [['email', 'pass', 'firstname', 'lastname', 'authKey', 'accessToken', 'username', 'phone_number'], 'string', 'max' => 255],
             [['company_id'], 'unique'],
             [['email'], 'unique'],
             [['role'], 'unique'],
@@ -52,6 +52,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'authKey' => 'Auth Key',
             'accessToken' => 'Access Token',
             'username' => 'Username',
+            'phone_number' => 'Phone Number'
         ];
     }
 
