@@ -11,6 +11,7 @@ use Yii;
  * @property string $user_id
  * @property string $name
  * @property string $lang
+ * @property string $additional_users
  */
 class Company extends \yii\db\ActiveRecord
 {
@@ -30,7 +31,7 @@ class Company extends \yii\db\ActiveRecord
         return [
             [['user_id', 'name', 'lang'], 'required'],
             [['user_id'], 'integer'],
-            [['name'], 'string', 'max' => 250],
+            [['name', 'additional_users'], 'string', 'max' => 250],
             [['lang'], 'string', 'max' => 5],
         ];
     }
@@ -45,6 +46,7 @@ class Company extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'name' => 'Name',
             'lang' => 'Lang',
+            'additional_users' => 'Additional Users',
         ];
     }
 }
