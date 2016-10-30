@@ -11,9 +11,9 @@ use Yii;
  * @property string $company_id
  * @property string $user_id
  * @property string $goods_id
+ * @property string $provider_goods_id
  * @property string $amount
  * @property string $sold_date
- * @property string $paid
  * @property string $paid_type
  */
 class Sold extends \yii\db\ActiveRecord
@@ -33,11 +33,10 @@ class Sold extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['company_id', 'user_id', 'goods_id', 'amount', 'paid_type'], 'required'],
-            [['company_id', 'user_id', 'goods_id'], 'integer'],
+            [['company_id', 'user_id', 'goods_id', 'provider_goods_id', 'amount', 'paid_type'], 'required'],
+            [['company_id', 'user_id', 'goods_id', 'provider_goods_id'], 'integer'],
             [['amount'], 'number'],
             [['sold_date'], 'safe'],
-            [['paid'], 'string', 'max' => 2],
         ];
     }
 
@@ -51,9 +50,9 @@ class Sold extends \yii\db\ActiveRecord
             'company_id' => 'Company ID',
             'user_id' => 'User ID',
             'goods_id' => 'Goods ID',
+            'provider_goods_id' => 'Provider Goods Id',
             'amount' => 'Amount',
             'sold_date' => 'Sold Date',
-            'paid' => 'Paid',
             'paid_type' => 'Paid type',
         ];
     }
@@ -61,13 +60,16 @@ class Sold extends \yii\db\ActiveRecord
     public function addGoods($rows) {
         $list = array();
         $companyId = \Yii::$app->params['companyId'];
+        $removeFromStorage = array();
+
         foreach($rows as $val) {
-            $list[] = array(null, $companyId, $val['userId'], $val['id'], $val['amount'], $val['date'], '1', $val['type']);
+            $removeFromStorage[] = array('goods_id' => $val['id'], 'provider_goods_id' => $val['provider_goods_id'], 'amount' => $val['amount']);
+            $list[] = array(null, $companyId, $val['userId'], $val['id'], $val['provider_goods_id'], $val['amount'], $val['date'], $val['type']);
         }
 
         Yii::$app->db->createCommand()->batchInsert(self::tableName(), $this->attributes(), $list)->execute();
 
         $storage = new Storage();
-        $storage->addGoods($rows);
+        $storage->decrementGoods($removeFromStorage);
     }
 }

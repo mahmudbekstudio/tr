@@ -13,9 +13,6 @@ use Yii;
  * @property string $name
  * @property string $pic
  * @property string $price
- * @property string $percent
- * @property string $sell_price
- * @property string $category_id
  * @property string $unit
  */
 class Goods extends \yii\db\ActiveRecord
@@ -34,11 +31,12 @@ class Goods extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['company_id', 'name', 'pic', 'price', 'sell_price', 'category_id', 'ordering'], 'required'],
-            [['company_id', 'category_id'], 'integer'],
-            [['price', 'percent', 'sell_price'], 'number'],
+            [['company_id', 'name', 'pic', 'price', 'ordering'], 'required'],
+            [['company_id'], 'integer'],
+            [['price', 'sell_price'], 'number'],
             [['code', 'name', 'pic'], 'string', 'max' => 255],
             [['unit'], 'string', 'max' => 50],
+            [['unit_type'], 'string', 'max' => 20],
         ];
     }
 
@@ -54,12 +52,14 @@ class Goods extends \yii\db\ActiveRecord
             'name' => 'Name',
             'pic' => 'Pic',
             'price' => 'Price',
-            'percent' => 'Percent',
-            'sell_price' => 'Sell Price',
-            'category_id' => 'Category ID',
             'unit' => 'Unit',
+            'unit_type' => 'Unit Type',
             'ordering' => 'Ordering'
         ];
+    }
+
+    public function getMeta() {
+        return $this->hasMany(GoodsMeta::className(), ['goods_id' => 'id']);
     }
 
     public static function getAllGoodsByIds($ids) {
@@ -68,7 +68,8 @@ class Goods extends \yii\db\ActiveRecord
             $idsWhere[] = 'id=' . $ids[$i]['goods_id'];
         }
         return static::find()
-            ->where(['and', 'company_id' => \Yii::$app->params['companyId'], $idsWhere])
+            ->with('meta')
+            ->where(['and', "`company_id`='" . \Yii::$app->params['companyId'] . "'", $idsWhere])
             ->orderBy(['ordering' => SORT_ASC])
             ->all();
     }
